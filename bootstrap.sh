@@ -26,7 +26,7 @@ bootstrap () {
         then
             info "Found bootstrap.sh"
         else
-            for src in $(find -H "$dir" -maxdepth 1 -mindepth 1 -not -path '*.git*')
+            for src in $(find -H "$dir" -maxdepth 1 -mindepth 1 -not -path '*.git*' -not -name 'bootsrap*')
             do
                 local overwrite= backup= skip=
                 local action=
@@ -69,6 +69,9 @@ bootstrap () {
                         ln -s "$src" "$dst"
                         success "Linked $src to $dst"
                     fi
+		else
+		    ln -s "$src" "$dst"
+		    success "Linked $src to $dst"
                 fi
             done
         fi
