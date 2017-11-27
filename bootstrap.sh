@@ -3,19 +3,19 @@ set -e
 DOTFILES=$(pwd -P)
 
 info () {
-    printf "\r\033[2k [ \033[00;34mINFO\033[0m ] $1\n"
+    printf "\r\033[39m [ \033[00;34mINFO\033[0m ] $1\n"
 }
 
 warn () {
-    printf "\r\033[2k [ \033[00;35mWARN\033[0m ] $1\n"
+    printf "\r\033[39m [ \033[00;35mWARN\033[0m ] $1\n"
 }
 
 success () {
-    printf "\r\033[2k [ \033[00;32mDONE\033[0m ] $1\n"
+    printf "\r\033[39m [ \033[00;32mDONE\033[0m ] $1\n"
 }
 
 fail () {
-    printf "\r\033[2k [ \033[00;31mFAIL\033[0m ] $1\n"
+    printf "\r\033[39m [ \033[00;31mFAIL\033[0m ] $1\n"
 }
 
 bootstrap () {
@@ -26,15 +26,31 @@ bootstrap () {
         then
             info "Found bootstrap.sh"
         else
-            for src in $(find -H "$dir" -maxdepth 1 -mindepth 1 -not -path '*.git*' -not -name 'bootstrap*')
+            bdir=$(basename $dir)
+            for src in $(find -H "$bdir"  -not -path '*.git*' -type d | tail -n+2)
+            do
+                info "Found directory $src"
+                srcs=$(echo $src | sed 's\^[^/]*/\\g')
+                dst="$HOME/$srcs"
+                if [ -d "$dst" ]
+                then
+                    info "Directory $dst already exists, skipping"
+                else
+                    mkdir $dst
+                    success "Created directory $sdirdst"
+                fi
+            done
+
+            for src in $(find -H "$bdir" -mindepth 1 -not -path '*.git*' -not -name 'bootstrap*' -type f)
             do
                 local overwrite= backup= skip=
                 local action=
 
-                info "Linking $src"
-                dst="$HOME/$(basename $src)"
+                info "Found file $src"
+                srcs=$(echo $src | sed 's\^[^/]*/\\g')
+                dst="$HOME/$srcs"
                 info "Linking to $dst"
-                if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+                if [ -f "$dst" ]
                 then
                     warn "File already exists $dst\n          [s]kip, [o]verwrite, [b]ackup"
                     read -n 1 action
@@ -66,11 +82,11 @@ bootstrap () {
                     then
                         success "Skipped $src"
                     else
-                        ln -s "$src" "$dst"
-                        success "Linked $src to $dst"
+                        ln -s "$DOTFILES/$src" "$dst"
+                        success "Linked $DOTFILES/$src to $dst"
                     fi
 		        else
-		            ln -s "$src" "$dst"
+		            ln -s "$DOTFILES/$src" "$dst"
 		            success "Linked $src to $dst"
                 fi
             done
