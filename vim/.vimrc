@@ -25,7 +25,15 @@ set relativenumber
 set splitbelow
 set splitright
 
-"call vundle#begin()
+set hlsearch
+set smartindent
+
+set rtp+=~/.vim/bundle/vundle.vim
+call vundle#begin()
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'JuliaEditorSupport/julia-vim'
+call vundle#end()
+filetype plugin indent on
 
 set background=dark
 let g:solarized_termcolors=256
