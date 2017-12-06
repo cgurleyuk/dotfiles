@@ -32,6 +32,7 @@ set rtp+=~/.vim/bundle/vundle.vim
 call vundle#begin()
     Plugin 'VundleVim/Vundle.vim'
     Plugin 'JuliaEditorSupport/julia-vim'
+    Plugin 'scrooloose/nerdtree'
 call vundle#end()
 filetype plugin indent on
 
@@ -53,6 +54,9 @@ nnoremap tl :tablast<CR>
 nnoremap tt :tabedit<Space>
 nnoremap tn :tabnext<Space>
 nnoremap tm :tabm<Space>
+
+nnoremap bk :bn<CR>
+nnoremap bj :bp<CR>
 
 " gvim settings
 if has("gui_running")
