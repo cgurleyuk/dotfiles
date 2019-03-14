@@ -36,3 +36,9 @@
 
 (setq custom-file "~/.emacs.d/custom.il")
 (load custom-file)
+
+(setq backup-directory-alist `(("." . "~/.emacs_backup")))
+(setq backup-by-copying t)
+
+
+
