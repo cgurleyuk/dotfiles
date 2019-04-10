@@ -28,13 +28,24 @@ set splitright
 set hlsearch
 set smartindent
 
-set rtp+=~/.vim/bundle/vundle.vim
-call vundle#begin()
-    Plugin 'VundleVim/Vundle.vim'
+if has('win32') || has('win64')
+    set rtp+=$HOME/vimfiles/bundle/Vundle.vim
+    call vundle#begin('$HOME/vimfiles/bundle')
+else
+    set rtp+=~/.vim/bundle/vundle.vim
+    call vundle#begin()
+endif
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-airline/vim-airline'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+if !has('win32')
     Plugin 'JuliaEditorSupport/julia-vim'
     Plugin 'scrooloose/syntastic'
-    Plugin 'scrooloose/nerdtree'
+endif
 call vundle#end()
+
 filetype plugin indent on
 
 set background=dark
@@ -48,18 +59,20 @@ set enc=utf-8
 syntax enable
 
 " syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+if !has('win32')
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 0
+    let g:syntastic_check_on_wq = 0
 
-let g:syntastic_julia_checkers = ['lint']
+    let g:syntastic_julia_checkers = ['lint']
 
-let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': ['python'], 'passive_filetypes': ['julia']}
+    let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': ['python'], 'passive_filetypes': ['julia']}
+endif
 
 " tab command remaps
 nnoremap th :tabfirst<CR>
@@ -72,6 +85,8 @@ nnoremap tm :tabm<Space>
 
 nnoremap bk :bn<CR>
 nnoremap bj :bp<CR>
+
+nnoremap <C-n> :NERDTree<CR>
 
 " gvim settings
 if has("gui_running")
