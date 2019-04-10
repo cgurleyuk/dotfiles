@@ -32,6 +32,10 @@
 (org-babel-do-load-languages
  'org-babel-load-languages '((python . t)))
 
+(add-to-list 'image-type-file-name-regexps '("\\.eps\\'" . imagemagick))
+(add-to-list 'image-file-name-extensions "eps")
+(setq org-image-actual-width '(400))
+
 (global-set-key "\C-ca" 'org-agenda)
 
 (custom-set-variables
