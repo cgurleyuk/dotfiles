@@ -25,7 +25,17 @@ set relativenumber
 set splitbelow
 set splitright
 
-"call vundle#begin()
+set hlsearch
+set smartindent
+
+set rtp+=~/.vim/bundle/vundle.vim
+call vundle#begin()
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'JuliaEditorSupport/julia-vim'
+    Plugin 'scrooloose/syntastic'
+    Plugin 'scrooloose/nerdtree'
+call vundle#end()
+filetype plugin indent on
 
 set background=dark
 let g:solarized_termcolors=256
@@ -37,6 +47,20 @@ set enc=utf-8
 " syntax
 syntax enable
 
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_julia_checkers = ['lint']
+
+let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': ['python'], 'passive_filetypes': ['julia']}
+
 " tab command remaps
 nnoremap th :tabfirst<CR>
 nnoremap tk :tabnext<CR>
@@ -45,6 +69,9 @@ nnoremap tl :tablast<CR>
 nnoremap tt :tabedit<Space>
 nnoremap tn :tabnext<Space>
 nnoremap tm :tabm<Space>
+
+nnoremap bk :bn<CR>
+nnoremap bj :bp<CR>
 
 " gvim settings
 if has("gui_running")
